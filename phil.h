@@ -6,7 +6,7 @@
 /*   By: rubsky <rubsky@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/11 16:01:53 by rubsky            #+#    #+#             */
-/*   Updated: 2023/06/27 16:27:54 by rubsky           ###   ########.fr       */
+/*   Updated: 2023/06/28 14:01:32 by rubsky           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,11 +23,11 @@
 /*Error Flags*/
 # define INPUT_ERR1 "Not enough arguments. Expected 4 [5]:\nUsage: \
 ./philo <num of philos> <die time> <eat time> <sleep time> [meals per philo]"
-# define INPUT_ERR2 "Invalid input"
-# define INIT_ERR "Error with initializing data"
-# define ALLOC_ERR "Malloc error detected"
-# define MUTEX_ERR "Error with mutex init"
-# define TIME_ERR "Time error"
+# define INPUT_ERR2 "Invalid input\n"
+# define INIT_ERR "Error with initializing data\n"
+# define ALLOC_ERR "Malloc error detected\n"
+# define MUTEX_ERR "Error with mutex init\n"
+# define PTHREAD_ERR "Creating pthread error detected\n"
 
 /*bool*/
 # define SUCCESS 0
@@ -106,11 +106,12 @@ long long	get_time(void);
 
 /*threads*/
 int			start_threads(t_data *data, t_phil *philo);
-int			join_threads(t_data *data);
+int			join_threads(t_data *data, int i);
 
 /*exit*/
 int			ft_error(char *flag, t_data *data);
 void		ft_exit(t_data *data);
+void		ft_puterr(char *flag);
 
 /*feast*/
 int			ft_eat_sleep_think(t_phil *philo);

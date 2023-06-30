@@ -6,7 +6,7 @@
 /*   By: rubsky <rubsky@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/11 18:51:57 by rubsky            #+#    #+#             */
-/*   Updated: 2023/06/27 23:37:45 by rubsky           ###   ########.fr       */
+/*   Updated: 2023/06/30 14:37:34 by rubsky           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,8 +34,11 @@ void	ft_exit(t_data *data)
 	while (i < data->args.num_phil)
 	{
 		pthread_mutex_destroy(&data->forks[i]);
-		pthread_mutex_destroy(&data->philo[i].m_lmeal);
-		pthread_mutex_destroy(&data->philo[i].m_full);
+		if (data->philo != NULL)
+		{
+			pthread_mutex_destroy(&data->philo[i].m_lmeal);
+			pthread_mutex_destroy(&data->philo[i].m_full);
+		}
 		i++;
 	}
 	pthread_mutex_destroy(&data->write);

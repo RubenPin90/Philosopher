@@ -6,7 +6,7 @@
 #    By: rubsky <rubsky@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/03/15 16:58:54 by rpinchas          #+#    #+#              #
-#    Updated: 2023/06/26 22:15:43 by rubsky           ###   ########.fr        #
+#    Updated: 2023/06/28 14:17:39 by rubsky           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -53,11 +53,12 @@ ${OBJDIR}/%.o: ${SRCDIR}/%.c obj_check
 
 debug1: DEBUG += -fsanitize=address
 debug1: fclean ${NAME}
-	@printf "DEBUG: Compiled with ${BLUE}fsanitize=address${RESET}\n\n"
+	@echo "DEBUG: Compiled with ${BLUE}fsanitize=address${RESET}\n\n"
 
 debug2: DEBUG += -fsanitize=thread
-debug2: fclean ${NAME}
-	@printf "DEBUG: Compiled with ${BLUE}fsanitize=thread${RESET}\n\n"
+debug2: fclean ${NAME} 
+	@echo "DEBUG: Compiled with ${BLUE}fsanitize=thread${RESET}\n\n"
+#debug2: fclean ${NAME}
 
 obj_check: 
 	@echo "${BLUE}Making object files...${RESET}"

@@ -6,7 +6,7 @@
 /*   By: rubsky <rubsky@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/12 02:51:31 by rubsky            #+#    #+#             */
-/*   Updated: 2023/06/27 23:41:14 by rubsky           ###   ########.fr       */
+/*   Updated: 2023/06/28 14:07:55 by rubsky           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,17 +63,27 @@ void	ft_control(t_data *data, t_phil *philo)
 	}
 }
 
-int	join_threads(t_data *data)
+int	join_threads(t_data *data, int i)
 {
-	int	i;
-
-	i = 0;
-	while (i < data->args.num_phil && data->philo[i].thread)
+	while (i >= 0)
 	{
 		pthread_join(data->philo[i].thread, NULL);
-		i++;
+		i--;
 	}
 	return (SUCCESS);
+}
+
+int	feast_stop(t_data *data, int i)
+{
+	pthread_mutex_lock(&data->write);
+	pthread_mutex_lock(&data->m_alive);
+	data->check_print = true;
+	data->alive = false;
+	pthread_mutex_unlock(&data->m_alive);
+	pthread_mutex_unlock(&data->write);
+	join_threads(data, i - 1);
+	printf("Creating pthread %d failed!\n", i);
+	return (ft_error(PTHREAD_ERR, NULL));
 }
 
 int	start_threads(t_data *data, t_phil *philo)
@@ -84,15 +94,11 @@ int	start_threads(t_data *data, t_phil *philo)
 	i = -1;
 	while (++i < data->args.num_phil)
 	{
-		if (pthread_create(&philo[i].thread, NULL, \
-									&start_the_feast, &philo[i]))
-		{
-			printf("Creating pthread with ID %d failed!", i);
-			return (FAIL);
-		}
+		if (pthread_create(&philo[i].thread, NULL, &start_the_feast, &philo[i]))
+			return (feast_stop(data, i));
 		usleep(1000);
 	}
 	ft_control(data, philo);
-	join_threads(data);
+	join_threads(data, i - 1);
 	return (SUCCESS);
 }
