@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   feast.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rubsky <rubsky@student.42.fr>              +#+  +:+       +#+        */
+/*   By: rpinchas <rpinchas@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/13 12:10:09 by rubsky            #+#    #+#             */
-/*   Updated: 2023/06/27 23:15:05 by rubsky           ###   ########.fr       */
+/*   Updated: 2023/07/12 13:37:09 by rpinchas         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,7 +75,3 @@ int	ft_lonely_philo(t_data *data, t_phil *philo)
 	ft_print(philo, RED, DIED);
 	return (SUCCESS);
 }
-
-
-
-

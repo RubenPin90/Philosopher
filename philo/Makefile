@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: rubsky <rubsky@student.42.fr>              +#+  +:+       +#+         #
+#    By: rpinchas <rpinchas@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/03/15 16:58:54 by rpinchas          #+#    #+#              #
-#    Updated: 2023/06/28 14:17:39 by rubsky           ###   ########.fr        #
+#    Updated: 2023/07/12 13:34:09 by rpinchas         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -41,14 +41,14 @@ RED := \033[31m
 RESET := \033[0m
 
 #RULES
-all: ${NAME}
+all: ${OBJDIR} ${NAME}
 
 ${NAME}: ${OBJ}
 	@echo "${YELLOW}Compiling...${RESET}"
 	${CC} ${CFLAGS} ${DEBUG} ${HEAD} -o $@ ${OBJ}
 	@echo "${GREEN}Code ready to run${RESET}"
 
-${OBJDIR}/%.o: ${SRCDIR}/%.c obj_check
+${OBJDIR}/%.o: ${SRCDIR}/%.c
 	${CC} ${CFLAGS} ${DEBUG} -I. -c $< -o $@
 
 debug1: DEBUG += -fsanitize=address
@@ -58,9 +58,8 @@ debug1: fclean ${NAME}
 debug2: DEBUG += -fsanitize=thread
 debug2: fclean ${NAME} 
 	@echo "DEBUG: Compiled with ${BLUE}fsanitize=thread${RESET}\n\n"
-#debug2: fclean ${NAME}
 
-obj_check: 
+${OBJDIR}: 
 	@echo "${BLUE}Making object files...${RESET}"
 	@mkdir -p ${OBJDIR}
 

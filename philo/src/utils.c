@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rubsky <rubsky@student.42.fr>              +#+  +:+       +#+        */
+/*   By: rpinchas <rpinchas@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/11 16:46:28 by rubsky            #+#    #+#             */
-/*   Updated: 2023/06/22 16:51:10 by rubsky           ###   ########.fr       */
+/*   Updated: 2023/07/12 13:37:25 by rpinchas         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,4 +72,3 @@ long long	get_time(void)
 	tmp = (start.tv_sec * 1000) + (start.tv_usec / 1000);
 	return (tmp);
 }
-
