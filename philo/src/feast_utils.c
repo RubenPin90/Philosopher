@@ -5,8 +5,8 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: rpinchas <rpinchas@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/06/22 10:38:19 by rubsky            #+#    #+#             */
-/*   Updated: 2023/07/12 13:36:59 by rpinchas         ###   ########.fr       */
+/*   Created: 2023/07/12 16:08:12 by rpinchas          #+#    #+#             */
+/*   Updated: 2023/07/12 19:16:30 by rpinchas         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,13 +49,13 @@ int	ft_print(t_phil *philo, char *color, char *msg)
 	timestamp = get_time() - philo->data->start_time;
 	if (*philo->check_print == false)
 		printf("%s%lld\t%d %s%s\n", color, timestamp, philo->id, msg, RESET);
-	if (is_dead(philo) == true)
+	if (is_dead(philo) == true || are_full(philo->data) == true)
 		*philo->check_print = true;
 	pthread_mutex_unlock(&philo->data->write);
 	return (SUCCESS);
 }
 
-int	check_status(t_phil *philo, bool check)
+int	check_status(t_phil *philo)
 {
 	int	tmp;
 
@@ -64,10 +64,11 @@ int	check_status(t_phil *philo, bool check)
 	if (philo->data->alive == false)
 		tmp = true;
 	pthread_mutex_unlock(&philo->data->m_alive);
-	if (tmp && check)
-	{
-		pthread_mutex_unlock(&philo->data->forks[philo->r_fork]);
-		pthread_mutex_unlock(&philo->data->forks[philo->l_fork]);
-	}
+	if (are_full(philo->data))
+		tmp = true;
+	// pthread_mutex_lock(&philo->data->m_done);
+	// if (philo->data->done == philo->args.num_phil)
+	// 	tmp = true;
+	// pthread_mutex_unlock(&philo->data->m_done);
 	return (tmp);
 }

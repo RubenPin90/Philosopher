@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   phil.h                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rubsky <rubsky@student.42.fr>              +#+  +:+       +#+        */
+/*   By: rpinchas <rpinchas@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/11 16:01:53 by rubsky            #+#    #+#             */
-/*   Updated: 2023/06/28 14:01:32 by rubsky           ###   ########.fr       */
+/*   Updated: 2023/07/12 19:07:55 by rpinchas         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -115,12 +115,12 @@ void		ft_puterr(char *flag);
 
 /*feast*/
 int			ft_eat_sleep_think(t_phil *philo);
-int			ft_lonely_philo(t_data *data, t_phil *philo);
+void		*ft_lonely_philo(void *ptr);
 
 /*feast_utils*/
 int			is_dead(t_phil *philo);
 int			are_full(t_data *data);
 int			ft_print(t_phil *philo, char *color, char *msg);
-int			check_status(t_phil *philo, bool check);
+int			check_status(t_phil *philo);
 
 #endif

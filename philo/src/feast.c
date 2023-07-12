@@ -5,8 +5,8 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: rpinchas <rpinchas@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/06/13 12:10:09 by rubsky            #+#    #+#             */
-/*   Updated: 2023/07/12 13:37:09 by rpinchas         ###   ########.fr       */
+/*   Created: 2023/07/12 16:07:20 by rpinchas          #+#    #+#             */
+/*   Updated: 2023/07/12 19:19:19 by rpinchas         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,8 +24,10 @@ int	drop_forks(t_data *data, t_phil *philo, int order)
 		pthread_mutex_unlock(&data->forks[philo->l_fork]);
 		pthread_mutex_unlock(&data->forks[philo->r_fork]);
 	}
+	if (check_status(philo))
+		return (FAIL);
 	ft_print(philo, BLUE, SLEEP);
-	if (check_status(philo, false))
+	if (check_status(philo))
 		return (FAIL);
 	usleep(philo->args.time_to_sleep * 1000);
 	ft_print(philo, GREEN, THINK);
@@ -53,7 +55,7 @@ int	pick_up_forks(t_data *data, t_phil *philo, int order)
 
 int	ft_eat_sleep_think(t_phil *philo)
 {
-	if (check_status(philo, false))
+	if (check_status(philo))
 		return (FAIL);
 	pick_up_forks(philo->data, philo, philo->id % 2);
 	pthread_mutex_lock(&philo->m_lmeal);
@@ -66,12 +68,14 @@ int	ft_eat_sleep_think(t_phil *philo)
 	return (SUCCESS);
 }
 
-int	ft_lonely_philo(t_data *data, t_phil *philo)
+void	*ft_lonely_philo(void *ptr)
 {
-	data->start_time = get_time();
-	philo->last_meal = data->start_time;
+	t_phil	*philo;
+
+	philo = (t_phil *)ptr;
+	philo->last_meal = get_time();
 	ft_print(philo, YELLOW, FORK);
 	usleep(philo->args.time_to_die * 1000);
 	ft_print(philo, RED, DIED);
-	return (SUCCESS);
+	return (NULL);
 }

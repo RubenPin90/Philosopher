@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   threads.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rubsky <rubsky@student.42.fr>              +#+  +:+       +#+        */
+/*   By: rpinchas <rpinchas@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/06/12 02:51:31 by rubsky            #+#    #+#             */
-/*   Updated: 2023/06/28 14:07:55 by rubsky           ###   ########.fr       */
+/*   Created: 2023/07/12 16:07:42 by rpinchas          #+#    #+#             */
+/*   Updated: 2023/07/12 19:10:56 by rpinchas         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "phil.h"
 
-void	*start_the_feast(void *ptr)
+void	*start_feast(void *ptr)
 {
 	t_phil	*philo;
 
@@ -20,20 +20,20 @@ void	*start_the_feast(void *ptr)
 	pthread_mutex_lock(&philo->m_lmeal);
 	philo->last_meal = get_time();
 	pthread_mutex_unlock(&philo->m_lmeal);
-	while (philo->meals != philo->args.phil_hunger)
+	while (1)
 	{
 		if (ft_eat_sleep_think(philo))
 			break ;
-	}
-	if (philo->meals == philo->args.phil_hunger)
-	{
-		pthread_mutex_lock(&philo->m_full);
-		philo->full = true;
-		pthread_mutex_unlock(&philo->m_full);
-		pthread_mutex_lock(&philo->data->m_done);
-		philo->data->done++;
-		pthread_mutex_unlock(&philo->data->m_done);
-	}
+		if (philo->meals == philo->args.phil_hunger && philo->full == false)
+		{
+			pthread_mutex_lock(&philo->m_full);
+			pthread_mutex_lock(&philo->data->m_done);
+			philo->full = true;
+			philo->data->done++;
+			pthread_mutex_unlock(&philo->data->m_done);
+			pthread_mutex_unlock(&philo->m_full);
+		}
+	}	
 	return (NULL);
 }
 
@@ -81,7 +81,7 @@ int	feast_stop(t_data *data, int i)
 	data->alive = false;
 	pthread_mutex_unlock(&data->m_alive);
 	pthread_mutex_unlock(&data->write);
-	join_threads(data, i - 1);
+	join_threads(data, i);
 	printf("Creating pthread %d failed!\n", i);
 	return (ft_error(PTHREAD_ERR, NULL));
 }
@@ -91,14 +91,23 @@ int	start_threads(t_data *data, t_phil *philo)
 	int	i;
 
 	data->start_time = get_time();
-	i = -1;
-	while (++i < data->args.num_phil)
+	i = 0;
+	if (data->args.num_phil == 1)
 	{
-		if (pthread_create(&philo[i].thread, NULL, &start_the_feast, &philo[i]))
+		if (pthread_create(&philo[i].thread, NULL, &ft_lonely_philo, &philo[i]))
 			return (feast_stop(data, i));
-		usleep(1000);
 	}
-	ft_control(data, philo);
-	join_threads(data, i - 1);
+	else
+	{
+		while (i < data->args.num_phil)
+		{
+			if (pthread_create(&philo[i].thread, NULL, &start_feast, &philo[i]))
+				return (feast_stop(data, i));
+			usleep(1000);
+			i++;
+		}
+		ft_control(data, philo);
+	}
+	join_threads(data, i);
 	return (SUCCESS);
 }

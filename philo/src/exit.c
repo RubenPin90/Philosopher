@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exit.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rubsky <rubsky@student.42.fr>              +#+  +:+       +#+        */
+/*   By: rpinchas <rpinchas@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/11 18:51:57 by rubsky            #+#    #+#             */
-/*   Updated: 2023/06/30 14:37:34 by rubsky           ###   ########.fr       */
+/*   Updated: 2023/07/12 17:53:18 by rpinchas         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,3 +64,5 @@ int	ft_error(char *flag, t_data *data)
 		ft_exit(data);
 	return (FAIL);
 }
+
+
