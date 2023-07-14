@@ -6,7 +6,7 @@
 /*   By: rpinchas <rpinchas@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/12 16:08:12 by rpinchas          #+#    #+#             */
-/*   Updated: 2023/07/12 19:16:30 by rpinchas         ###   ########.fr       */
+/*   Updated: 2023/07/13 12:11:36 by rpinchas         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,12 +18,12 @@ int	is_dead(t_phil *philo)
 
 	tmp = false;
 	pthread_mutex_lock(&philo->m_lmeal);
-	pthread_mutex_lock(&philo->m_full);
-	if ((get_time() - philo->last_meal) > philo->args.time_to_die && \
-														philo->full != true)
+	//pthread_mutex_lock(&philo->m_full);
+	if ((get_time() - philo->last_meal) > philo->args.time_to_die) 
+	// && philo->full != true)
 		tmp = true;
 	pthread_mutex_unlock(&philo->m_lmeal);
-	pthread_mutex_unlock(&philo->m_full);
+	//pthread_mutex_unlock(&philo->m_full);
 	return (tmp);
 }
 
@@ -66,9 +66,20 @@ int	check_status(t_phil *philo)
 	pthread_mutex_unlock(&philo->data->m_alive);
 	if (are_full(philo->data))
 		tmp = true;
-	// pthread_mutex_lock(&philo->data->m_done);
-	// if (philo->data->done == philo->args.num_phil)
-	// 	tmp = true;
-	// pthread_mutex_unlock(&philo->data->m_done);
 	return (tmp);
+}
+
+int	update_meals(t_phil *philo, t_input args, t_data *data)
+{
+	philo->meals++;
+	if (philo->meals == args.phil_hunger && philo->full == false)
+	{
+		pthread_mutex_lock(&philo->m_full);
+		pthread_mutex_lock(&data->m_done);
+		philo->full = true;
+		data->done++;
+		pthread_mutex_unlock(&data->m_done);
+		pthread_mutex_unlock(&philo->m_full);
+	}
+	return (SUCCESS);
 }

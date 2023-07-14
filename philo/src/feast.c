@@ -6,7 +6,7 @@
 /*   By: rpinchas <rpinchas@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/12 16:07:20 by rpinchas          #+#    #+#             */
-/*   Updated: 2023/07/12 19:19:19 by rpinchas         ###   ########.fr       */
+/*   Updated: 2023/07/13 12:17:30 by rpinchas         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,19 +63,17 @@ int	ft_eat_sleep_think(t_phil *philo)
 	pthread_mutex_unlock(&philo->m_lmeal);
 	ft_print(philo, GREEN, EAT);
 	usleep(philo->args.time_to_eat * 1000);
-	philo->meals++;
+	update_meals(philo, philo->args, philo->data);
 	drop_forks(philo->data, philo, philo->id % 2);
+	if (check_status(philo))
+		return (FAIL);
 	return (SUCCESS);
 }
 
-void	*ft_lonely_philo(void *ptr)
+int	ft_lonely(t_phil *philo)
 {
-	t_phil	*philo;
-
-	philo = (t_phil *)ptr;
-	philo->last_meal = get_time();
 	ft_print(philo, YELLOW, FORK);
 	usleep(philo->args.time_to_die * 1000);
 	ft_print(philo, RED, DIED);
-	return (NULL);
+	return (SUCCESS);
 }

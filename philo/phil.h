@@ -6,7 +6,7 @@
 /*   By: rpinchas <rpinchas@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/11 16:01:53 by rubsky            #+#    #+#             */
-/*   Updated: 2023/07/12 19:07:55 by rpinchas         ###   ########.fr       */
+/*   Updated: 2023/07/13 12:03:06 by rpinchas         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,13 +21,15 @@
 # include <stdbool.h>
 
 /*Error Flags*/
-# define INPUT_ERR1 "Not enough arguments. Expected 4 [5]:\nUsage: \
-./philo <num of philos> <die time> <eat time> <sleep time> [meals per philo]"
+# define INPUT_ERR1 "Not enough arguments. Expected 4 [5]:\n\n \
+*************   Usage   **************\n \
+./philo <num of philos> <die time> <eat time> <sleep time> [meals per philo]\n\n"
 # define INPUT_ERR2 "Invalid input\n"
 # define INIT_ERR "Error with initializing data\n"
 # define ALLOC_ERR "Malloc error detected\n"
 # define MUTEX_ERR "Error with mutex init\n"
 # define PTHREAD_ERR "Creating pthread error detected\n"
+# define JOIN_ERR "Joining pthreads error detected\n"
 
 /*bool*/
 # define SUCCESS 0
@@ -115,12 +117,13 @@ void		ft_puterr(char *flag);
 
 /*feast*/
 int			ft_eat_sleep_think(t_phil *philo);
-void		*ft_lonely_philo(void *ptr);
+int			ft_lonely(t_phil *philo);
 
 /*feast_utils*/
 int			is_dead(t_phil *philo);
 int			are_full(t_data *data);
 int			ft_print(t_phil *philo, char *color, char *msg);
 int			check_status(t_phil *philo);
+int			update_meals(t_phil *philo, t_input args, t_data *data);
 
 #endif
