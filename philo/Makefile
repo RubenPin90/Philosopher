@@ -6,7 +6,7 @@
 #    By: rpinchas <rpinchas@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/03/15 16:58:54 by rpinchas          #+#    #+#              #
-#    Updated: 2023/07/12 14:28:53 by rpinchas         ###   ########.fr        #
+#    Updated: 2023/07/18 11:51:46 by rpinchas         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -73,4 +73,4 @@ fclean: clean
 
 re: fclean all
 
-.PHONY: all clean fclean  debug tebug re
+.PHONY: all clean fclean debug1 debug2 re
