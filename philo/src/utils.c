@@ -6,7 +6,7 @@
 /*   By: rpinchas <rpinchas@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/12 16:08:04 by rpinchas          #+#    #+#             */
-/*   Updated: 2023/07/18 11:05:51 by rpinchas         ###   ########.fr       */
+/*   Updated: 2023/07/20 13:18:07 by rpinchas         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,4 +63,3 @@ long long	get_time(void)
 	tmp = (start.tv_sec * 1000) + (start.tv_usec / 1000);
 	return (tmp);
 }
-

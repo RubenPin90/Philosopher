@@ -6,16 +6,20 @@
 /*   By: rpinchas <rpinchas@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/18 11:00:18 by rpinchas          #+#    #+#             */
-/*   Updated: 2023/07/18 11:30:35 by rpinchas         ###   ########.fr       */
+/*   Updated: 2023/07/20 14:27:23 by rpinchas         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-int lmeal_mutex(t_data *data, t_input args)
+#include "phil.h"
+
+int	lmeal_mutex(t_data *data, t_input args)
 {
+	int		i;
 	bool	mutex_fail;
 
+	i = -1;
 	mutex_fail = false;
-	while (++i < data->args.num_phil)
+	while (++i < args.num_phil)
 	{
 		if (pthread_mutex_init(&data->philo[i].m_lmeal, NULL))
 		{
@@ -34,39 +38,67 @@ int lmeal_mutex(t_data *data, t_input args)
 	}
 	return (SUCCESS);
 }
-int alloc_mutex(t_data *data)
+
+int	forks_mutex(t_data *data, t_input args)
 {
-	data->write = malloc(sizeof(pthread_mutex_t));
-	if (!data->write)
-		return (FAIL);
-	data->m_done = malloc(sizeof(pthread_mutex_t));
-	if (!data->m_done)
+	int		i;
+	bool	mutex_fail;
+
+	i = -1;
+	mutex_fail = false;
+	while (++i < args.num_phil)
 	{
-		free_null(data->write);
-		return (FAIL);
+		if (pthread_mutex_init(&data->m_forks[i], NULL))
+		{
+			mutex_fail = true;
+			break ;
+		}
 	}
-	data->m_alive = malloc(sizeof(pthread_mutex_t));
-	if (!data->m_alive)
+	if (mutex_fail == true)
 	{
-		free_null(data->write);
-		free_null(data->m_done);
+		while (i >= 0)
+			pthread_mutex_destroy(&data->m_forks[i--]);
 		return (FAIL);
 	}
 	return (SUCCESS);
 }
 
-
-
-int	mutex_init(t_data *data, t_input args)
+int	alloc_mutex(t_data *data)
 {
-	if (lmeal_mutex(data, data->args))
-		return ()
-	alloc_mutex(data);
-	if (pthread_mutex_init(data->write, NULL))
-		return (ft_error(MUTEX_ERR, data, args.num_phil));
+	data->m_alive = malloc(sizeof(pthread_mutex_t));
+	data->m_print = malloc(sizeof(pthread_mutex_t));
+	data->m_done = malloc(sizeof(pthread_mutex_t));
+	if (!data->m_alive || !data->m_print || !data->m_done)
+		return (ft_error(ALLOC_ERR, data, true));
+	if (pthread_mutex_init(data->m_print, NULL))
+		return (FAIL);
 	if (pthread_mutex_init(data->m_done, NULL))
-		return (ft_error(MUTEX_ERR, data, args.num_phil));
+	{
+		pthread_mutex_destroy(data->m_print);
+		return (FAIL);
+	}
 	if (pthread_mutex_init(data->m_alive, NULL))
-		return (ft_error(MUTEX_ERR, data, args.num_phil));
+	{
+		pthread_mutex_destroy(data->m_print);
+		pthread_mutex_destroy(data->m_done);
+		return (FAIL);
+	}
 	return (SUCCESS);
+}
+
+int	init_mutex(t_data *data, t_input args)
+{
+	if (lmeal_mutex(data, args))
+		return (ft_error(MUTEX_ERR, data, false));
+	if (forks_mutex(data, args))
+		return (ft_error(MUTEX_ERR, data, true));
+	if (alloc_mutex(data))
+		return (FAIL);
+	return (SUCCESS);
+}
+
+void	cleanup_mutex(pthread_mutex_t *ptr)
+{
+	pthread_mutex_destroy(ptr);
+	free_null((void *)ptr);
 }

@@ -6,7 +6,7 @@
 /*   By: rpinchas <rpinchas@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/11 18:51:57 by rubsky            #+#    #+#             */
-/*   Updated: 2023/07/18 11:49:48 by rpinchas         ###   ########.fr       */
+/*   Updated: 2023/07/20 14:26:36 by rpinchas         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,23 +14,16 @@
 
 void	free_data(t_data *data)
 {
-	if (data->forks)
-	{
-		free(data->forks);
-		data->forks = NULL;
-	}
+	if (data->m_forks)
+		free_null((void *)data->m_forks);
 	if (data->philo)
-	{
-		free(data->philo);
-		data->philo = NULL;
-	}
-	free(data);
-	data = NULL;
+		free_null((void *)data->philo);
+	free_null((void *)data);
 }
 
 void	ft_exit(t_data *data, bool check)
 {
-	int i;
+	int	i;
 
 	i = -1;
 	if (check == true)
@@ -39,13 +32,13 @@ void	ft_exit(t_data *data, bool check)
 			pthread_mutex_destroy(&data->philo[i].m_lmeal);
 		i = -1;
 		while (++i < data->args.num_phil)
-			pthread_mutex_destroy(&data->forks[i]);
-		if (data->write != NULL)
-			pthread_mutex_destroy(data->write);
+			pthread_mutex_destroy(&data->m_forks[i]);
+		if (data->m_print != NULL)
+			cleanup_mutex(data->m_print);
 		if (data->m_done != NULL)
-			pthread_mutex_destroy(data->m_done);
+			cleanup_mutex(data->m_done);
 		if (data->m_alive != NULL)
-			pthread_mutex_destroy(data->m_alive);
+			cleanup_mutex(data->m_alive);
 	}
 	free_data(data);
 }
@@ -74,5 +67,5 @@ void	free_null(void *ptr)
 	{
 		free(ptr);
 		ptr = NULL;
-	}	
+	}
 }
