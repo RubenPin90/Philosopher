@@ -6,7 +6,7 @@
 /*   By: rpinchas <rpinchas@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/11 16:01:53 by rubsky            #+#    #+#             */
-/*   Updated: 2023/07/13 12:03:06 by rpinchas         ###   ########.fr       */
+/*   Updated: 2023/07/20 14:17:39 by rpinchas         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,9 +69,7 @@ typedef struct s_phil
 	t_input			args;	
 	int				id;
 	int				meals;
-	bool			full;
 	bool			*check_print;
-	pthread_mutex_t	m_full;
 	long long		last_meal;
 	pthread_mutex_t	m_lmeal;
 	int				r_fork;
@@ -85,35 +83,43 @@ typedef struct s_data
 	int				n_thread;
 	long long		start_time;
 	bool			alive;
-	pthread_mutex_t	m_alive;
+	pthread_mutex_t	*m_alive;
 	int				done;
-	pthread_mutex_t	m_done;
-	pthread_mutex_t	*forks;
+	pthread_mutex_t	*m_done;
+	pthread_mutex_t	*m_forks;
 	bool			check_print;
-	pthread_mutex_t	write;
+	pthread_mutex_t	*m_print;
 }	t_data;
 
 /*init*/
-int			start_init(t_data *data, char **av, int count);
+int			start_init(t_data **data, char **av, int count);
 void		fill_philos(t_data *data, t_phil *philo, t_input args);
 int			init_philos(t_data *data, t_input args);
 int			init_forks(t_data *data, t_input args);
-int			init_data(t_data *data, char **av, int count);
+int			init_data(t_data **data, char **av, int count);
 
 /*utils*/
 int			ft_atoi(char *str);
 int			check_args(int count, char **argv);
-void		print_data(t_input args);
 long long	get_time(void);
+
+/*handle_mutex*/
+int			lmeal_mutex(t_data *data, t_input args);
+int			forks_mutex(t_data *data, t_input args);
+int			alloc_mutex(t_data *data);
+int			init_mutex(t_data *data, t_input args);
+void		cleanup_mutex(pthread_mutex_t *ptr);
 
 /*threads*/
 int			start_threads(t_data *data, t_phil *philo);
 int			join_threads(t_data *data, int i);
 
 /*exit*/
-int			ft_error(char *flag, t_data *data);
-void		ft_exit(t_data *data);
+void		free_data(t_data *data);
+int			ft_error(char *flag, t_data *data, bool check);
+void		ft_exit(t_data *data, bool check);
 void		ft_puterr(char *flag);
+void		free_null(void *ptr);
 
 /*feast*/
 int			ft_eat_sleep_think(t_phil *philo);

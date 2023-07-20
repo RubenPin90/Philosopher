@@ -6,7 +6,7 @@
 #    By: rpinchas <rpinchas@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/03/15 16:58:54 by rpinchas          #+#    #+#              #
-#    Updated: 2023/07/12 14:28:53 by rpinchas         ###   ########.fr        #
+#    Updated: 2023/07/19 11:35:04 by rpinchas         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -24,7 +24,8 @@ SRC_F := main.c \
 	threads.c \
 	feast.c \
 	feast_utils.c \
-	exit.c
+	exit.c \
+	handle_mutex.c
 SRC := 	${addprefix ${SRCDIR}/, ${SRC_F}}
 OBJDIR := obj
 OBJ_F :=  ${SRC_F:%.c=%.o}
@@ -73,4 +74,4 @@ fclean: clean
 
 re: fclean all
 
-.PHONY: all clean fclean  debug tebug re
+.PHONY: all clean fclean debug1 debug2 re

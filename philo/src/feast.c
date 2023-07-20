@@ -6,7 +6,7 @@
 /*   By: rpinchas <rpinchas@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/12 16:07:20 by rpinchas          #+#    #+#             */
-/*   Updated: 2023/07/13 12:17:30 by rpinchas         ###   ########.fr       */
+/*   Updated: 2023/07/20 14:19:55 by rpinchas         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,13 +16,13 @@ int	drop_forks(t_data *data, t_phil *philo, int order)
 {
 	if (order == 0)
 	{
-		pthread_mutex_unlock(&data->forks[philo->r_fork]);
-		pthread_mutex_unlock(&data->forks[philo->l_fork]);
+		pthread_mutex_unlock(&data->m_forks[philo->r_fork]);
+		pthread_mutex_unlock(&data->m_forks[philo->l_fork]);
 	}
 	else if (order == 1)
 	{
-		pthread_mutex_unlock(&data->forks[philo->l_fork]);
-		pthread_mutex_unlock(&data->forks[philo->r_fork]);
+		pthread_mutex_unlock(&data->m_forks[philo->l_fork]);
+		pthread_mutex_unlock(&data->m_forks[philo->r_fork]);
 	}
 	if (check_status(philo))
 		return (FAIL);
@@ -40,13 +40,13 @@ int	pick_up_forks(t_data *data, t_phil *philo, int order)
 {
 	if (order == 0)
 	{
-		pthread_mutex_lock(&data->forks[philo->r_fork]);
-		pthread_mutex_lock(&data->forks[philo->l_fork]);
+		pthread_mutex_lock(&data->m_forks[philo->r_fork]);
+		pthread_mutex_lock(&data->m_forks[philo->l_fork]);
 	}
 	else if (order == 1)
 	{
-		pthread_mutex_lock(&data->forks[philo->l_fork]);
-		pthread_mutex_lock(&data->forks[philo->r_fork]);
+		pthread_mutex_lock(&data->m_forks[philo->l_fork]);
+		pthread_mutex_lock(&data->m_forks[philo->r_fork]);
 	}
 	ft_print(philo, YELLOW, FORK);
 	ft_print(philo, YELLOW, FORK);

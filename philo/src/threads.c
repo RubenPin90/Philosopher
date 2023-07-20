@@ -6,7 +6,7 @@
 /*   By: rpinchas <rpinchas@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/12 16:07:42 by rpinchas          #+#    #+#             */
-/*   Updated: 2023/07/13 12:04:04 by rpinchas         ###   ########.fr       */
+/*   Updated: 2023/07/20 14:20:03 by rpinchas         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,9 +21,7 @@ void	*start_feast(void *ptr)
 	philo->last_meal = get_time();
 	pthread_mutex_unlock(&philo->m_lmeal);
 	if (philo->args.num_phil == 1)
-	{
 		ft_lonely(philo);
-	}
 	else
 	{
 		while (1)
@@ -45,9 +43,9 @@ void	ft_control(t_data *data, t_phil *philo)
 		if (is_dead(&philo[i]))
 		{
 			ft_print(&philo[i], RED, DIED);
-			pthread_mutex_lock(&data->m_alive);
+			pthread_mutex_lock(data->m_alive);
 			data->alive = false;
-			pthread_mutex_unlock(&data->m_alive);
+			pthread_mutex_unlock(data->m_alive);
 			return ;
 		}
 		if (are_full(data))
@@ -64,7 +62,7 @@ int	join_threads(t_data *data, int i)
 	while (i >= 0)
 	{
 		if (pthread_join(data->philo[i].thread, NULL))
-			return (ft_error(JOIN_ERR, data));
+			return (ft_error(JOIN_ERR, data, true));
 		i--;
 	}
 	return (SUCCESS);
@@ -72,15 +70,15 @@ int	join_threads(t_data *data, int i)
 
 int	feast_stop(t_data *data, int i)
 {
-	pthread_mutex_lock(&data->write);
-	pthread_mutex_lock(&data->m_alive);
+	pthread_mutex_lock(data->m_print);
+	pthread_mutex_lock(data->m_alive);
 	data->check_print = true;
 	data->alive = false;
-	pthread_mutex_unlock(&data->m_alive);
-	pthread_mutex_unlock(&data->write);
+	pthread_mutex_unlock(data->m_alive);
+	pthread_mutex_unlock(data->m_print);
 	join_threads(data, i - 1);
 	printf("Creating pthread %d failed!\n", i);
-	return (ft_error(PTHREAD_ERR, NULL));
+	return (ft_error(PTHREAD_ERR, NULL, false));
 }
 
 int	start_threads(t_data *data, t_phil *philo)
