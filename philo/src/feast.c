@@ -74,6 +74,5 @@ int	ft_lonely(t_phil *philo)
 {
 	ft_print(philo, YELLOW, FORK);
 	usleep(philo->args.time_to_die * 1000);
-	ft_print(philo, RED, DIED);
 	return (SUCCESS);
 }
