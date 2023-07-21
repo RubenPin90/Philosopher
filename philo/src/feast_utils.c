@@ -6,7 +6,7 @@
 /*   By: rpinchas <rpinchas@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/12 16:08:12 by rpinchas          #+#    #+#             */
-/*   Updated: 2023/07/20 14:27:47 by rpinchas         ###   ########.fr       */
+/*   Updated: 2023/07/21 17:52:05 by rpinchas         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ int	are_full(t_data *data)
 	return (tmp);
 }
 
-int	ft_print(t_phil *philo, char *color, char *msg)
+int	ft_print(t_phil *philo, char *color, char *msg, bool vip)
 {
 	long long	timestamp;
 
@@ -46,7 +46,7 @@ int	ft_print(t_phil *philo, char *color, char *msg)
 	timestamp = get_time() - philo->data->start_time;
 	if (are_full(philo->data) == true)
 		*philo->check_print = true;
-	if (*philo->check_print == false)
+	if (*philo->check_print == false || vip == true)
 		printf("%s%lld\t%d %s%s\n", color, timestamp, philo->id, msg, RESET);
 	if (is_dead(philo) == true || are_full(philo->data) == true)
 		*philo->check_print = true;

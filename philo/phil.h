@@ -6,7 +6,7 @@
 /*   By: rpinchas <rpinchas@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/11 16:01:53 by rubsky            #+#    #+#             */
-/*   Updated: 2023/07/20 14:17:39 by rpinchas         ###   ########.fr       */
+/*   Updated: 2023/07/21 17:53:04 by rpinchas         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -128,7 +128,7 @@ int			ft_lonely(t_phil *philo);
 /*feast_utils*/
 int			is_dead(t_phil *philo);
 int			are_full(t_data *data);
-int			ft_print(t_phil *philo, char *color, char *msg);
+int			ft_print(t_phil *philo, char *color, char *msg, bool vip);
 int			check_status(t_phil *philo);
 int			update_meals(t_phil *philo, t_input args, t_data *data);
 

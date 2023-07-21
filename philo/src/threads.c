@@ -6,7 +6,7 @@
 /*   By: rpinchas <rpinchas@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/12 16:07:42 by rpinchas          #+#    #+#             */
-/*   Updated: 2023/07/20 14:20:03 by rpinchas         ###   ########.fr       */
+/*   Updated: 2023/07/21 17:52:43 by rpinchas         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ void	ft_control(t_data *data, t_phil *philo)
 			i = 0;
 		if (is_dead(&philo[i]))
 		{
-			ft_print(&philo[i], RED, DIED);
+			ft_print(&philo[i], RED, DIED, true);
 			pthread_mutex_lock(data->m_alive);
 			data->alive = false;
 			pthread_mutex_unlock(data->m_alive);
