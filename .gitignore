@@ -3,4 +3,4 @@ obj/
 *.a
 .vscode/
 README.md
-philo
+philo/philo
